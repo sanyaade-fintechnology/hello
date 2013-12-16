@@ -216,6 +216,7 @@ do_single_request(Mod, Context, Req = #request{method = MethodName}) ->
             Report = io_lib:format("Error (~p) thrown by RPC handler '~p' while executing the method \"~s\":~n"
                                    "Parameters: ~p~nReason: ~p~nTrace:~n~p~n",
                                    [Type, Mod, Req#request.method, Req#request.params, Error, erlang:get_stacktrace()]),
+            hello_request_log:bad_request(Mod, ?MODULE, endpoint, lists:flatten(Report), server_error),
             error_logger:error_report(Report),
             hello_proto:error_response(Req, server_error)
     end.
